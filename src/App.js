@@ -1,25 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+export const geoApiOptions = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '309a519febmsh3085e91915f09ecp1766e2jsn3459e83dbbcd',
+		'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
+	}
+};
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export const GEO_API_URL = "https://wft-geo-db.p.rapidapi.com/v1/geo";
 
-export default App;
+export const WEATHER_API_URL = "https://api.openweathermap.org/data/2.5";
+export const WEATHER_API_KEY = "91dcc57cd9c1c244710f86d37e4af69e";
+
