@@ -1,13 +1,42 @@
-export const geoApiOptions = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '309a519febmsh3085e91915f09ecp1766e2jsn3459e83dbbcd',
-		'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
-	}
-};
+import './App.css';
+import Search from './components/search/search';
+import CurrentWeather from './components/current-weather/current-weather';
+import Forecast from './components/forecast/forecast';
+import { WEATHER_API_URL, WEATHER_API_KEY } from './api'
+import { useState } from 'react';
 
-export const GEO_API_URL = "https://wft-geo-db.p.rapidapi.com/v1/geo";
+function App() {
+  const [currentWeather, setCurrentWeather] = useState(null);
+  const [forecast, setForcast] = useState(null);
 
-export const WEATHER_API_URL = "https://api.openweathermap.org/data/2.5";
-export const WEATHER_API_KEY = "91dcc57cd9c1c244710f86d37e4af69e";
+  const handleOnSearchChange = (searchData) => {
+    const [lat, lon] = searchData.value.split(" ");
 
+    const currentWeatherFetch = fetch(`${WEATHER_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
+    const forecastFetch = fetch(`${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
+
+    Promise.all([currentWeatherFetch, forecastFetch])
+      .then(async (response) => {
+        const weatherResponse = await response[0].json();
+        const forcastResponse = await response[1].json();
+
+        setCurrentWeather({ city: searchData.label, ...weatherResponse });
+        setForcast({ city: searchData.label, ...forcastResponse });
+      })
+      .catch((err) => console.log(err));
+
+  }
+
+  
+
+
+  return (
+    <div className="container">
+      <Search onSearchChange={handleOnSearchChange} />
+      {currentWeather && <CurrentWeather data={currentWeather} />}
+      {forecast && <Forecast data={forecast} />}
+    </div>
+  );
+}
+
+export default App;
